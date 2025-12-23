@@ -2,7 +2,7 @@
 
 lets say you have a **VPN/PROXY** listening on this address:
 ```
-10.125.248.133.7890
+10.125.248.133:7890
 ```
 the system wants to know the answer of this question:
 > Which programs should use this proxy, and how do they know
