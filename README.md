@@ -1,6 +1,6 @@
 # Ubuntu-proxy-update-automation
 
-lets say you have a VPN/PROXY listening on this address:
+lets say you have a *VPN/PROXY* listening on this address:
 ```
 10.125.248.133.7890
 ```
