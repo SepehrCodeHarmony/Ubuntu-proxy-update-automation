@@ -12,7 +12,7 @@ There’s no single standard. Each layer of the system has its own method.
 in order to answer I have this approach:
 
 ## 1. ```/etc/proxy.conf```
-- It dose nothing by itself, the file just notes what is the ip and port that your **VPN/PROXY** is listening on
+- It does nothing by itself, the file just notes what is the ip and port that your **VPN/PROXY** is listening on
 
 for example:
 ```bash
@@ -31,9 +31,9 @@ When you log in:
 - git (most of the time)
 This file is executed.
 
-But the prible is thingd like **Docker**, **apt**, and **systemd** don’t care about the file
+But the problem is things like **Docker**, **apt**, and **systemd** don’t care about the file
 
-the file contetnt should be sth like:
+the file content should be sth like:
 ```bash
 source /etc/proxy.conf
 export http_proxy="http://$PROXY_IP"
@@ -49,6 +49,12 @@ This file is read:
 - By the login manager
 - By some sessions
 But the problem still exists ...
+this does not support variable expantion and you shlould hard write the values like:
+```bash
+HTTP_PROXY=http://10.125.248.113:7890
+HTTPS_PROXY=http://10.125.248.113:7890
+NO_PROXY=localhost,127.0.0.1,::1
+```
 
 ## 4. ```/etc/apt/apt.conf.d/95proxies```
 apt:
@@ -70,7 +76,7 @@ Acquire::https::Proxy "http://10.125.248.113:7890/";
  
 ## 5. ```cat /etc/systemd/system/docker.service.d/http-proxy.conf```
 **Docker**
-using the prixy by the docker deomom that is runnig by the systemd
+using the prixy by the docker daemon that is runnig by the systemd
 the content of file looks like this:
 ```bash
 [Service]
@@ -78,10 +84,10 @@ Environment="HTTP_PROXY=http://10.125.248.113:7890"
 Environment="HTTPS_PROXY=http://10.125.248.113:7890"
 Environment="NO_PROXY=localhost,127.0.0.1,::1"
 ```
-**docker deomon is runnig before the user login, "systemd" so it apeats not to undrestans the env and expands it. so agin like the APT you have to hard write it in the file!**
+**docker deomon is runnig before the user login, "systemd" so it apears not to undrestans the env and expands it. so agin like the APT you have to hard write it in the file!**
 
 ## 6. /usr/local/bin/pupdate
-and for the final part we have the automaztion
+and for the final part we have the automation
 this is the bash script for it:
 
 ```bash
@@ -133,13 +139,13 @@ systemctl restart docker
 echo "Proxy updated to $PROXY_URL"
 
 ```
- and then give it the permition:
+ and then give it the permission:
  ```bash
 sudo chmod +x /usr/local/bin/pupdate
 ```
 
 ---
-after this you can run ```sudo pupdate``` to chnage the ip and port!
+after this you can run ```sudo pupdate``` to change the ip and port!
 
 
 
